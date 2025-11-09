@@ -3,7 +3,7 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 -- Users
-CREATE TABLE cookbook_user (
+CREATE TABLE IF NOT EXISTS cookbook_user (
     user_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     email TEXT NOT NULL UNIQUE,
     display_name TEXT NOT NULL,
@@ -11,14 +11,14 @@ CREATE TABLE cookbook_user (
 );
 
 -- Ingredients
-CREATE TABLE ingredient (
+CREATE TABLE IF NOT EXISTS ingredient (
     ingredient_id SERIAL PRIMARY KEY,
     name TEXT NOT NULL UNIQUE,
     category TEXT
 );
 
 -- Recipes
-CREATE TABLE recipe (
+CREATE TABLE IF NOT EXISTS recipe (
     recipe_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     title TEXT NOT NULL,
     instructions TEXT NOT NULL,
@@ -27,7 +27,7 @@ CREATE TABLE recipe (
 );
 
 -- Recipe_Ingredient junction
-CREATE TABLE recipe_ingredient (
+CREATE TABLE IF NOT EXISTS recipe_ingredient (
     recipe_id UUID NOT NULL REFERENCES recipe(recipe_id) ON DELETE CASCADE,
     ingredient_id INT NOT NULL REFERENCES ingredient(ingredient_id),
     quantity NUMERIC(10,2),
@@ -36,7 +36,7 @@ CREATE TABLE recipe_ingredient (
 );
 
 -- User Pantry: what ingredients each user currently has
-CREATE TABLE user_pantry (
+CREATE TABLE IF NOT EXISTS user_pantry (
     user_id UUID NOT NULL REFERENCES cookbook_user(user_id) ON DELETE CASCADE,
     ingredient_id INT NOT NULL REFERENCES ingredient(ingredient_id) ON DELETE CASCADE,
     quantity NUMERIC(10,2) NOT NULL DEFAULT 0,
@@ -45,7 +45,7 @@ CREATE TABLE user_pantry (
 );
 
 -- Reviews: users can rate and comment on recipes
-CREATE TABLE review (
+CREATE TABLE IF NOT EXISTS review (
     review_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     recipe_id UUID NOT NULL REFERENCES recipe(recipe_id) ON DELETE CASCADE,
     user_id UUID NOT NULL REFERENCES cookbook_user(user_id) ON DELETE CASCADE,
@@ -56,7 +56,7 @@ CREATE TABLE review (
 );
 
 -- Users can mark recipes as favorites
-CREATE TABLE favorite_recipe (
+CREATE TABLE IF NOT EXISTS favorite_recipe (
     user_id UUID NOT NULL REFERENCES cookbook_user(user_id) ON DELETE CASCADE,
     recipe_id UUID NOT NULL REFERENCES recipe(recipe_id) ON DELETE CASCADE,
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
@@ -64,13 +64,13 @@ CREATE TABLE favorite_recipe (
 );
 
 -- Tags for categorizing recipes (carnivore, breakfast, healthy, budget, etc)
-CREATE TABLE tag (
+CREATE TABLE IF NOT EXISTS tag (
     tag_id SERIAL PRIMARY KEY,
     name TEXT NOT NULL UNIQUE
 );
 
 -- Junction: which tags belong to which recipes
-CREATE TABLE recipe_tag (
+CREATE TABLE IF NOT EXISTS recipe_tag (
     recipe_id UUID NOT NULL REFERENCES recipe(recipe_id) ON DELETE CASCADE,
     tag_id INT NOT NULL REFERENCES tag(tag_id) ON DELETE CASCADE,
     PRIMARY KEY (recipe_id, tag_id)
