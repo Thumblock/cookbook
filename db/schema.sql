@@ -54,3 +54,24 @@ CREATE TABLE review (
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     UNIQUE (recipe_id, user_id)
 );
+
+-- Users can mark recipes as favorites
+CREATE TABLE favorite_recipe (
+    user_id UUID NOT NULL REFERENCES cookbook_user(user_id) ON DELETE CASCADE,
+    recipe_id UUID NOT NULL REFERENCES recipe(recipe_id) ON DELETE CASCADE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    PRIMARY KEY (user_id, recipe_id)
+);
+
+-- Tags for categorizing recipes (carnivore, breakfast, healthy, budget, etc)
+CREATE TABLE tag (
+    tag_id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL UNIQUE
+);
+
+-- Junction: which tags belong to which recipes
+CREATE TABLE recipe_tag (
+    recipe_id UUID NOT NULL REFERENCES recipe(recipe_id) ON DELETE CASCADE,
+    tag_id INT NOT NULL REFERENCES tag(tag_id) ON DELETE CASCADE,
+    PRIMARY KEY (recipe_id, tag_id)
+);
