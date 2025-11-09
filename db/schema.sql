@@ -43,3 +43,14 @@ CREATE TABLE user_pantry (
     unit TEXT,
     PRIMARY KEY (user_id, ingredient_id)
 );
+
+-- Reviews: users can rate and comment on recipes
+CREATE TABLE review (
+    review_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    recipe_id UUID NOT NULL REFERENCES recipe(recipe_id) ON DELETE CASCADE,
+    user_id UUID NOT NULL REFERENCES cookbook_user(user_id) ON DELETE CASCADE,
+    stars INT NOT NULL CHECK (stars BETWEEN 1 AND 5),
+    comment TEXT,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    UNIQUE (recipe_id, user_id)
+);

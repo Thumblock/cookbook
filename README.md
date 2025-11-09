@@ -24,3 +24,11 @@ constraint → a rule the DB enforces (PK, FK, UNIQUE, CHECK, NOT NULL)
 
 DDL → Data Definition Language (CREATE TABLE, etc)
 ````
+
+# UUID Extension : Reason
+````bash
+UUIDs are good for web apps because they’re globally unique and hard to guess.
+Postgres doesn’t auto-generate UUIDs by itself — we need a function for that.
+"uuid-ossp" extension gives us the function uuid_generate_v4()
+This keeps inserts simple (you don’t have to create UUIDs in Python) and keeps IDs consistent across all tables.
+
