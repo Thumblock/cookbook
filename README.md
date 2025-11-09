@@ -7,8 +7,10 @@ Interactive recipe/ingredient app using:
 - Streamlit (frontend / UI)
 - Python
 
+
+## Little glossary
+
 ````bash
-Little glossary
 
 inline FK → col TYPE REFERENCES other(col)
 

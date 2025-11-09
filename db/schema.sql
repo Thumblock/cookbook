@@ -34,3 +34,12 @@ CREATE TABLE recipe_ingredient (
     unit TEXT,
     PRIMARY KEY (recipe_id, ingredient_id)
 );
+
+-- User Pantry: what ingredients each user currently has
+CREATE TABLE user_pantry (
+    user_id UUID NOT NULL REFERENCES cookbook_user(user_id) ON DELETE CASCADE,
+    ingredient_id INT NOT NULL REFERENCES ingredient(ingredient_id) ON DELETE CASCADE,
+    quantity NUMERIC(10,2) NOT NULL DEFAULT 0,
+    unit TEXT,
+    PRIMARY KEY (user_id, ingredient_id)
+);
