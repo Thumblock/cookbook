@@ -111,3 +111,15 @@ FROM recipe r
 JOIN recipe_tag rt ON rt.recipe_id = r.recipe_id
 JOIN tag t ON t.tag_id = rt.tag_id
 ORDER BY r.title, t.name;
+
+-- Ingredient popularity: how often each ingredient is used in recipes
+CREATE OR REPLACE VIEW ingredient_usage_stats AS
+SELECT
+    i.ingredient_id,
+    i.name AS ingredient_name,
+    i.category,
+    COUNT(ri.recipe_id) AS used_in_recipes
+FROM ingredient i
+LEFT JOIN recipe_ingredient ri ON ri.ingredient_id = i.ingredient_id
+GROUP BY i.ingredient_id, i.name, i.category
+ORDER BY used_in_recipes DESC, i.name;
