@@ -67,3 +67,14 @@ PRIMARY-KEY,FOREIGN-KEY
 
 ## logic.sql as the brain 🧠
 ````bash
+View = prewritten SELECT
+Function = prewritten SELECT that accepts parameters
+p_... = “values coming from outside the function”
+Inside the function: “filter the view using those parameters”
+p_max_missing = 0 user must have everything to be fully cookable. if p_max_missing = 2 user can be missing up to 2 ingredients
+p_user = function parameter
+RETURN-QUERY-SELECT = the result of this SELECT is the result of the function.
+"$$...$$" = “Postgres to use everything between $ to be executed when you call the function
+LANGUAGE plpgsql = tells Postgres we’re using its procedural language(lets you use variables, IF, loops, etc.)
+BEGIN-END; = the block of code to run
+````

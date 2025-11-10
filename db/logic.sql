@@ -69,3 +69,33 @@ FROM recipe r
 LEFT JOIN recipe_ingredient ri ON ri.recipe_id = r.recipe_id
 GROUP BY r.recipe_id, r.title
 ORDER BY ingredient_count DESC;
+
+Function: get recipes a user can cook (or nearly cook)
+-- p_user: user_id we want to check
+-- p_max_missing: how many missing ingredients we allow (0 = only fully cookable)
+CREATE OR REPLACE FUNCTION get_user_cookable_recipes(
+    p_user UUID,
+    p_max_missing INT DEFAULT 0
+)
+RETURNS TABLE (
+    recipe_id UUID,
+    title TEXT,
+    total_ingredients INT,
+    user_has_ingredients INT,
+    missing_ingredients INT
+)
+AS $$
+BEGIN
+    RETURN QUERY
+    SELECT
+        urc.recipe_id,
+        urc.title,
+        urc.total_ingredients,
+        urc.user_has_ingredients,
+        urc.missing_ingredients
+    FROM user_recipe_cookability AS urc
+    WHERE urc.user_id = p_user
+      AND urc.missing_ingredients <= p_max_missing
+    ORDER BY urc.missing_ingredients, urc.title;
+END;
+$$ LANGUAGE plpgsql;
