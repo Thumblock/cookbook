@@ -19,3 +19,18 @@ FROM recipe r
 JOIN recipe_ingredient ri ON ri.recipe_id = r.recipe_id
 JOIN user_pantry u ON u.ingredient_id = ri.ingredient_id
 GROUP BY r.recipe_id, r.title, u.user_id;
+
+-- Combine the two to see "cookable" vs "missing"
+CREATE OR REPLACE VIEW user_recipe_cookability AS
+SELECT
+    ric.recipe_id,
+    ric.title,
+    ur.user_id,
+    ric.total_ingredients,
+    COALESCE(ur.user_has_ingredients, 0) AS user_has_ingredients,
+    (ric.total_ingredients - COALESCE(ur.user_has_ingredients, 0)) AS missing_ingredients
+FROM recipe_ingredient_counts ric
+CROSS JOIN cookbook_user cu
+LEFT JOIN user_recipe_matches ur
+    ON ur.recipe_id = ric.recipe_id
+   AND ur.user_id = cu.user_id;
