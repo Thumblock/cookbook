@@ -40,3 +40,14 @@ FROM information_schema.tables
 WHERE table_schema = 'public'
 ORDER BY table_name;
 ````
+
+## schema.sql
+* 🧱 The structure - Blueprint of database 
+````bash 
+CREATE-TABLE
+CREATE-EXTENSION
+PRIMARY-KEY,FOREIGN-KEY
+````
+
+## logic.sql as the brain 🧠
+````bash
