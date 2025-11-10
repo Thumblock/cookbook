@@ -11,7 +11,6 @@ Interactive recipe/ingredient app using:
 ## Little glossary
 
 ````bash
-
 inline FK → col TYPE REFERENCES other(col)
 
 table-level FK → CONSTRAINT name FOREIGN KEY (col) REFERENCES other(col)
@@ -23,6 +22,23 @@ composite primary key → primary key made of more than one column (PRIMARY KEY 
 constraint → a rule the DB enforces (PK, FK, UNIQUE, CHECK, NOT NULL)
 
 DDL → Data Definition Language (CREATE TABLE, etc)
+
+````
+* How to think when coding SQL :
+````bash
+Tables = nouns → user, recipe, ingredient, user_pantry
+
+Views = sentences you say a lot → “how many ingredients does a recipe have,” “what does this user have”
+
+Joins = connecting nouns → “user WITH their pantry,” “recipe WITH its ingredients”
+
+CROSS JOIN = “make everyone meet everyone”
+
+LEFT JOIN = “try to match, but don’t drop if there’s no match”
+
+COALESCE = “if the database says ‘nothing’, I actually want ‘0’”
+
+DISTINCT prevents double-counting if something weird happens (e.g. duplicate pantry rows)
 ````
 
 # UUID Extension : Reason
