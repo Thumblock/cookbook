@@ -70,7 +70,7 @@ LEFT JOIN recipe_ingredient ri ON ri.recipe_id = r.recipe_id
 GROUP BY r.recipe_id, r.title
 ORDER BY ingredient_count DESC;
 
-Function: get recipes a user can cook (or nearly cook)
+-- Function: get recipes a user can cook (or nearly cook)
 -- p_user: user_id we want to check
 -- p_max_missing: how many missing ingredients we allow (0 = only fully cookable)
 CREATE OR REPLACE FUNCTION get_user_cookable_recipes(
@@ -99,3 +99,15 @@ BEGIN
     ORDER BY urc.missing_ingredients, urc.title;
 END;
 $$ LANGUAGE plpgsql;
+
+-- Show recipes together with their tags
+CREATE OR REPLACE VIEW recipe_with_tags AS
+SELECT
+    r.recipe_id,
+    r.title,
+    t.tag_id,
+    t.name AS tag_name
+FROM recipe r
+JOIN recipe_tag rt ON rt.recipe_id = r.recipe_id
+JOIN tag t ON t.tag_id = rt.tag_id
+ORDER BY r.title, t.name;

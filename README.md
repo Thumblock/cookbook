@@ -1,4 +1,10 @@
 # SQL Cookbook
+👨‍🍳 Author
+Thumblock
+Database Design | SQL | Python | FastAPI | Streamlit | Postgres | Azure
+
+🚧 Work in Progress
+This README evolves along with the project.
 
 Interactive recipe/ingredient app using:
 - PostgreSQL (SQL server connection, table, functions)
