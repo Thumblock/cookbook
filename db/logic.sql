@@ -34,3 +34,15 @@ CROSS JOIN cookbook_user cu
 LEFT JOIN user_recipe_matches ur
     ON ur.recipe_id = ric.recipe_id
    AND ur.user_id = cu.user_id;
+
+-- Rating stats per recipe
+-- Shows: recipe, avg stars, number of reviews
+CREATE OR REPLACE VIEW recipe_rating_stats AS
+SELECT
+    r.recipe_id,
+    r.title,
+    COALESCE(AVG(rev.stars), 0) AS avg_stars,
+    COUNT(rev.review_id) AS review_count
+FROM recipe r
+LEFT JOIN review rev ON rev.recipe_id = r.recipe_id
+GROUP BY r.recipe_id, r.title;
