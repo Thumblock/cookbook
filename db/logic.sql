@@ -58,3 +58,14 @@ FROM cookbook_user u
 LEFT JOIN user_pantry up ON up.user_id = u.user_id
 GROUP BY u.user_id, u.display_name
 ORDER BY ingredient_variants DESC;
+
+-- Shows how many ingredients each recipe uses.
+CREATE OR REPLACE VIEW recipe_ingredient_usage AS
+SELECT
+    r.recipe_id,
+    r.title,
+    COUNT(ri.ingredient_id) AS ingredient_count
+FROM recipe r
+LEFT JOIN recipe_ingredient ri ON ri.recipe_id = r.recipe_id
+GROUP BY r.recipe_id, r.title
+ORDER BY ingredient_count DESC;
