@@ -25,7 +25,7 @@ CREATE OR REPLACE VIEW user_recipe_cookability AS
 SELECT
     ric.recipe_id,
     ric.title,
-    ur.user_id,
+    cu.user_id,
     ric.total_ingredients,
     COALESCE(ur.user_has_ingredients, 0) AS user_has_ingredients,
     (ric.total_ingredients - COALESCE(ur.user_has_ingredients, 0)) AS missing_ingredients
