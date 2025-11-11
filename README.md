@@ -13,6 +13,8 @@ Interactive recipe/ingredient app using:
 - Streamlit (frontend / UI)
 - Python
 
+## Postgres (azure)
+In PostgreSQL count() function is defined to always return a BIGINT, so function with count() had to be changed from int to BIGINT
 
 ## Little glossary
 

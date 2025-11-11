@@ -80,9 +80,9 @@ CREATE OR REPLACE FUNCTION get_user_cookable_recipes(
 RETURNS TABLE (
     recipe_id UUID,
     title TEXT,
-    total_ingredients INT,
-    user_has_ingredients INT,
-    missing_ingredients INT
+    total_ingredients BIGINT,
+    user_has_ingredients BIGINT,
+    missing_ingredients BIGINT
 )
 AS $$
 BEGIN
@@ -123,3 +123,16 @@ FROM ingredient i
 LEFT JOIN recipe_ingredient ri ON ri.ingredient_id = i.ingredient_id
 GROUP BY i.ingredient_id, i.name, i.category
 ORDER BY used_in_recipes DESC, i.name;
+
+-- Show which recipes a user has marked as favorite
+CREATE OR REPLACE VIEW user_favorite_recipes AS
+SELECT
+    u.user_id,
+    u.display_name,
+    r.recipe_id,
+    r.title,
+    fr.created_at AS favorited_at
+FROM cookbook_user u
+JOIN favorite_recipe fr ON fr.user_id = u.user_id
+JOIN recipe r ON r.recipe_id = fr.recipe_id
+ORDER BY u.display_name, fr.created_at DESC;
