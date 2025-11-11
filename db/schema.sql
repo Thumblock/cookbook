@@ -90,3 +90,11 @@ CREATE TABLE IF NOT EXISTS shopping_list_item (
     unit TEXT,
     PRIMARY KEY (shopping_list_id, ingredient_id)
 );
+
+CREATE TABLE IF NOT EXISTS recipe_media (
+    media_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    recipe_id UUID NOT NULL REFERENCES recipe(recipe_id) ON DELETE CASCADE,
+    media_url TEXT NOT NULL,
+    media_type TEXT DEFAULT 'image',
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
