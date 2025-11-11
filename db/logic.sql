@@ -70,36 +70,6 @@ LEFT JOIN recipe_ingredient ri ON ri.recipe_id = r.recipe_id
 GROUP BY r.recipe_id, r.title
 ORDER BY ingredient_count DESC;
 
--- Function: get recipes a user can cook (or nearly cook)
--- p_user: user_id we want to check
--- p_max_missing: how many missing ingredients we allow (0 = only fully cookable)
-CREATE OR REPLACE FUNCTION get_user_cookable_recipes(
-    p_user UUID,
-    p_max_missing INT DEFAULT 0
-)
-RETURNS TABLE (
-    recipe_id UUID,
-    title TEXT,
-    total_ingredients BIGINT,
-    user_has_ingredients BIGINT,
-    missing_ingredients BIGINT
-)
-AS $$
-BEGIN
-    RETURN QUERY
-    SELECT
-        urc.recipe_id,
-        urc.title,
-        urc.total_ingredients,
-        urc.user_has_ingredients,
-        urc.missing_ingredients
-    FROM user_recipe_cookability AS urc
-    WHERE urc.user_id = p_user
-      AND urc.missing_ingredients <= p_max_missing
-    ORDER BY urc.missing_ingredients, urc.title;
-END;
-$$ LANGUAGE plpgsql;
-
 -- Show recipes together with their tags
 CREATE OR REPLACE VIEW recipe_with_tags AS
 SELECT
@@ -136,3 +106,70 @@ FROM cookbook_user u
 JOIN favorite_recipe fr ON fr.user_id = u.user_id
 JOIN recipe r ON r.recipe_id = fr.recipe_id
 ORDER BY u.display_name, fr.created_at DESC;
+
+-- Function: get recipes a user can cook (or nearly cook)
+-- p_user: user_id we want to check
+-- p_max_missing: how many ingredients we allow missing. (0 = only fully cookable)
+CREATE OR REPLACE FUNCTION get_user_cookable_recipes(
+    p_user UUID,
+    p_max_missing INT DEFAULT 0
+)
+RETURNS TABLE (
+    recipe_id UUID,
+    title TEXT,
+    total_ingredients BIGINT,
+    user_has_ingredients BIGINT,
+    missing_ingredients BIGINT
+)
+AS $$
+BEGIN
+    RETURN QUERY
+    SELECT
+        urc.recipe_id,
+        urc.title,
+        urc.total_ingredients,
+        urc.user_has_ingredients,
+        urc.missing_ingredients
+    FROM user_recipe_cookability AS urc
+    WHERE urc.user_id = p_user
+      AND urc.missing_ingredients <= p_max_missing
+    ORDER BY urc.missing_ingredients, urc.title;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Function: get cookable (or near-cookable) recipes for a user, filtered by tag
+-- p_user: which user we are checking
+-- p_tag: name of the tag to filter on (e.g. 'breakfast', 'healthy')
+-- p_max_missing: how many ingredients we allow missing. (0 = only fully cookable)
+CREATE OR REPLACE FUNCTION get_user_cookable_recipes_by_tag(
+    p_user UUID,
+    p_tag TEXT,
+    p_max_missing INT DEFAULT 0
+)
+RETURNS TABLE (
+    recipe_id UUID,
+    title TEXT,
+    tag_name TEXT,
+    total_ingredients BIGINT,
+    user_has_ingredients BIGINT,
+    missing_ingredients BIGINT
+)
+AS $$
+BEGIN
+    RETURN QUERY
+    SELECT
+        urc.recipe_id,
+        urc.title,
+        t.name AS tag_name,
+        urc.total_ingredients,
+        urc.user_has_ingredients,
+        urc.missing_ingredients
+    FROM user_recipe_cookability AS urc
+    JOIN recipe_tag rt ON rt.recipe_id = urc.recipe_id
+    JOIN tag t ON t.tag_id = rt.tag_id
+    WHERE urc.user_id = p_user
+      AND urc.missing_ingredients <= p_max_missing
+      AND t.name = p_tag
+    ORDER BY urc.missing_ingredients, urc.title;
+END;
+$$ LANGUAGE plpgsql;
