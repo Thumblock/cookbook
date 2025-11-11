@@ -75,3 +75,18 @@ CREATE TABLE IF NOT EXISTS recipe_tag (
     tag_id INT NOT NULL REFERENCES tag(tag_id) ON DELETE CASCADE,
     PRIMARY KEY (recipe_id, tag_id)
 );
+-- User can create shopping List with timestamp.
+CREATE TABLE IF NOT EXISTS shopping_list (
+    shopping_list_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id UUID NOT NULL REFERENCES cookbook_user(user_id) ON DELETE CASCADE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+); 
+
+-- The items that goes into a shopping list
+CREATE TABLE IF NOT EXISTS shopping_list_item (
+    shopping_list_id UUID NOT NULL REFERENCES shopping_list(shopping_list_id) ON DELETE CASCADE,
+    ingredient_id INT NOT NULL REFERENCES ingredient(ingredient_id),
+    quantity NUMERIC(10,2),
+    unit TEXT,
+    PRIMARY KEY (shopping_list_id, ingredient_id)
+);
