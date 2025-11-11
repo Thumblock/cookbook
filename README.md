@@ -13,6 +13,23 @@ Interactive recipe/ingredient app using:
 - Streamlit (frontend / UI)
 - Python
 
+## 🔧 How to Run (using `uv` in Terminal *bash*)
+In Visual Studio Code - click Terminal : New Terminal, right bottom corner next to + sign click and choose *Bash*
+
+### 📦 1. Create & activate virtual environment
+````bash
+Write and run :
+uv venv
+
+# Activate:
+# Windows : Bash
+source .venv/Scripts/activate
+# macOS/Linux
+source .venv/bin/activate
+````
+
+
+
 ## Imports
 FastAPI            = main object that creates the web app with defining routes on it.
 HTTPException      = A way for client to tell something is wrong with status code.
