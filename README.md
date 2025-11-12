@@ -26,6 +26,16 @@ uv venv
 source .venv/Scripts/activate
 # macOS/Linux
 source .venv/bin/activate
+# Install the import requirements
+uv pip install -r requirements.txt
+
+⚙️ Start FastAPI backend
+uv run uvicorn src.cookbook.backend.api:app --reload
+Visit: http://127.0.0.1:8000/health
+
+Open another Terminal while you still have FastAPI running in first terminal *Bash*.
+🎨  Launch Streamlit Dashboard
+uv run streamlit run src/cookbook/frontend/dashboard.py
 ````
 
 
