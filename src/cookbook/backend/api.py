@@ -21,8 +21,9 @@ DATABASE_URL = os.getenv(
 
 def get_connection():
     return psycopg2.connect(DATABASE_URL, cursor_factory=RealDictCursor)
+# --- Response models ---
 
-
+# Used by /users/{user_id}/cookable
 class CookableRecipe(BaseModel):
     recipe_id: str
     title: str
@@ -30,7 +31,15 @@ class CookableRecipe(BaseModel):
     user_has_ingredients: int
     missing_ingredients: int
 
+class CookableRecipeWithTag(BaseModel):
+    recipe_id: str
+    title: str
+    tag_name: str
+    total_ingredients: int
+    user_has_ingredients: int
+    missing_ingredients: int
 
+# --- Health checks ---
 @app.get("/health")
 def health():
     return {"status": "ok"}
@@ -68,6 +77,30 @@ def get_user_cookable(user_id: str, max_missing: int = 0):
             cur.execute(
                 "SELECT * FROM get_user_cookable_recipes(%s, %s);",
                 (user_id, max_missing)
+            )
+            rows = cur.fetchall()
+    finally:
+        conn.close()
+
+    return rows
+
+@app.get(
+    "/users/{user_id}/cookable-by-tag",
+    response_model=list[CookableRecipeWithTag]
+)
+#Call the SQL function: SELECT * FROM get_user_cookable_recipes_by_tag(p_user, p_tag, p_max_missing);
+def get_user_cookable_by_tag(user_id: str, tag: str, max_missing: int = 0):
+    
+    try:
+        conn = get_connection()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"DB connection failed: {e}")
+
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                "SELECT * FROM get_user_cookable_recipes_by_tag(%s, %s, %s);",
+                (user_id, tag, max_missing)
             )
             rows = cur.fetchall()
     finally:

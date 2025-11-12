@@ -52,7 +52,7 @@ CREATE OR REPLACE VIEW user_pantry_stats AS
 SELECT
     u.user_id,
     u.display_name,
-    COUNT(up.ingredient_id) AS ingredient_variants,
+    COUNT(DISTINCT up.ingredient_id) AS ingredient_variants,
     COALESCE(SUM(up.quantity), 0) AS total_quantity
 FROM cookbook_user u
 LEFT JOIN user_pantry up ON up.user_id = u.user_id
