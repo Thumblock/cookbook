@@ -41,6 +41,18 @@ RealDictCursor     = Makes query results come back as dicts ({"recipe_id". "..."
 ## Postgres (azure)
 In PostgreSQL count() function is defined to always return a BIGINT, so function with count() had to be changed from int to BIGINT
 * psycopg2 = Postgres driver, what talks to my PostgreSQL database
+Code: run in azure :
+ALTER TABLE recipe
+ADD CONSTRAINT recipe_title_unique UNIQUE (title);
+
+* safe JOINs
+
+* Safety Check : 
+SELECT * FROM cookbook_user;
+SELECT * FROM recipe;
+SELECT * FROM recipe_ingredient;
+SELECT * FROM user_pantry;
+
 
 
 

@@ -98,3 +98,6 @@ CREATE TABLE IF NOT EXISTS recipe_media (
     media_type TEXT DEFAULT 'image',
     created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+
+ALTER TABLE recipe
+ADD CONSTRAINT recipe_title_unique UNIQUE (title);
