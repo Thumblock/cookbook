@@ -8,8 +8,8 @@ from dotenv import load_dotenv
 #Reads if .env exists
 load_dotenv()
 
-
-print("Loaded DB URL:", os.getenv("COOKBOOK_DB_URL"))
+# Safety Sanity check that .env is being loaded.
+# print("Loaded DB URL:", os.getenv("COOKBOOK_DB_URL"))
 
 app = FastAPI(title="Cookbook API")
 
@@ -48,3 +48,30 @@ def db_check():
         if 'conn' in locals():
             conn.close()
     return {"db": "ok", "result": row}
+
+@app.get(
+    "/users/{user_id}/cookable",
+    response_model=list[CookableRecipe]
+)
+#Call the SQL function:
+#SELECT * FROM get_user_cookable_recipes(p_user, p_max_missing);
+def get_user_cookable(user_id: str, max_missing: int = 0):
+    
+    # Connect to DB
+    try:
+        conn = get_connection()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"DB connection failed: {e}")
+
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                "SELECT * FROM get_user_cookable_recipes(%s, %s);",
+                (user_id, max_missing)
+            )
+            rows = cur.fetchall()
+    finally:
+        conn.close()
+
+    return rows
+
