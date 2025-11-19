@@ -41,6 +41,7 @@ ORDER BY table_name;
 
 ## Postgres (azure)
 In PostgreSQL count() function is defined to always return a BIGINT, so function with count() had to be changed from int to BIGINT
+````bash
 ## Imports
 FastAPI            = main object that creates the web app with defining routes on it.
 HTTPException      = A way for client to tell something is wrong with status code.
@@ -48,13 +49,13 @@ pydantic.BaseModel = FastAPI uses Pydantic to define and validate the shape ofth
 OS                 = Readable environment variables.
 psycopg2           = Postgres driver, what talks to my PostgreSQL database
 RealDictCursor     = Makes query results come back as dicts ({"recipe_id". "...","title": "..."})
+````
 
 
 
 
-
-
-* Imagine the database as a small kitchen with characters:
+##
+# " Imagine the database as a small kitchen with characters:
 
 👩‍🍳 User: says, “I want to make something delicious.”
 
