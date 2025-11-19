@@ -55,7 +55,7 @@ RealDictCursor     = Makes query results come back as dicts ({"recipe_id". "..."
 
 
 ##
-# " Imagine the database as a small kitchen with characters:
+* Imagine the database as a small kitchen with characters:
 
 👩‍🍳 User: says, “I want to make something delicious.”
 
