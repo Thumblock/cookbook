@@ -24,6 +24,7 @@ source .venv/bin/activate
 # Install the import requirements
 uv pip install -r requirements.txt
 Use .env.example and update real .env accordingly
+
 ⚙️ Start FastAPI backend
 uv run uvicorn src.cookbook.backend.api:app --reload
 Visit: http://127.0.0.1:8000/health
