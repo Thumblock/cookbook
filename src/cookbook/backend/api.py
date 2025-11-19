@@ -10,10 +10,11 @@ load_dotenv()
 
 # Safety Sanity check that .env is being loaded.
 # print("Loaded DB URL:", os.getenv("COOKBOOK_DB_URL"))
+# read from env or fall back to localhost
+
 
 app = FastAPI(title="Cookbook API")
 
-# read from env or fall back to localhost
 DATABASE_URL = os.getenv(
     "COOKBOOK_DB_URL",
     "postgresql://postgres:postgres@localhost:5432/cookbook"

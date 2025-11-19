@@ -1,17 +1,8 @@
-# SQL Cookbook
+# SQL Interactive Cookbook
 👨‍🍳 Author
 Thumblock
 Database Design | SQL | Python | FastAPI | Streamlit | Postgres | Azure
 
-🚧 Work in Progress
-This README evolves along with the project.
-
-Interactive recipe/ingredient app using:
-- PostgreSQL (SQL server connection, table, functions)
-- SQL (Azure, Table, Joins)
-- FastAPI (backend / API)
-- Streamlit (frontend / UI)
-- Python
 
 ## 🔧 How to Run (using `uv` in Terminal *bash*)
 In Visual Studio Code - click Terminal : New Terminal, right bottom corner next to + sign click and choose *Bash*
@@ -38,8 +29,18 @@ Open another Terminal while you still have FastAPI running in first terminal *Ba
 uv run streamlit run src/cookbook/frontend/dashboard.py
 ````
 
+* Query Sanity Check :
+````bash
+SELECT table_name
+FROM information_schema.tables
+WHERE table_schema = 'public'
+ORDER BY table_name;
+````
 
 
+
+## Postgres (azure)
+In PostgreSQL count() function is defined to always return a BIGINT, so function with count() had to be changed from int to BIGINT
 ## Imports
 FastAPI            = main object that creates the web app with defining routes on it.
 HTTPException      = A way for client to tell something is wrong with status code.
@@ -48,71 +49,48 @@ OS                 = Readable environment variables.
 psycopg2           = Postgres driver, what talks to my PostgreSQL database
 RealDictCursor     = Makes query results come back as dicts ({"recipe_id". "...","title": "..."})
 
-## Postgres (azure)
-In PostgreSQL count() function is defined to always return a BIGINT, so function with count() had to be changed from int to BIGINT
-* psycopg2 = Postgres driver, what talks to my PostgreSQL database
-Code: run in azure :
-ALTER TABLE recipe
-ADD CONSTRAINT recipe_title_unique UNIQUE (title);
-
-* safe JOINs
-
-* Safety Check : 
-SELECT * FROM cookbook_user;
-SELECT * FROM recipe;
-SELECT * FROM recipe_ingredient;
-SELECT * FROM user_pantry;
 
 
 
 
-## Little glossary
 
-````bash
-inline FK → col TYPE REFERENCES other(col)
+* Imagine the database as a small kitchen with characters:
 
-table-level FK → CONSTRAINT name FOREIGN KEY (col) REFERENCES other(col)
+👩‍🍳 User: says, “I want to make something delicious.”
 
-junction / bridge / link table → a table that’s mostly FKs to join two tables
+📦 Pantry: replies, “Here’s what you currently have.”
 
-composite primary key → primary key made of more than one column (PRIMARY KEY (a,b))
+📖 Recipe: says, “If you give me 2 eggs and butter, I’ll turn into an omelette.”
 
-constraint → a rule the DB enforces (PK, FK, UNIQUE, CHECK, NOT NULL)
+🏷️ Tag: whispers, “I’m a breakfast recipe, healthy and quick.”
 
-DDL → Data Definition Language (CREATE TABLE, etc)
+❤️ Favorite: “You made me last week and loved it!”
 
-````
+🧺 Shopping list: “You’re missing milk — add it to me so you don’t forget.”
+
+🧂 Ingredient: “I’m egg #5. I belong to both the pantry and recipes.”
+
+🖼️ Recipe media: “Let me show you how pretty your dish looks.”
+
+⭐ Review: “Let’s review what you thought about this meal.”
+
+* Every table has a voice and a purpose — and together they “talk” through foreign keys and joins.
+
+
+
 * How to think when coding SQL :
 ````bash
 Tables = nouns → user, recipe, ingredient, user_pantry
-
 Views = sentences you say a lot → “how many ingredients does a recipe have,” “what does this user have”
-
 Joins = connecting nouns → “user WITH their pantry,” “recipe WITH its ingredients”
-
 CROSS JOIN = “make everyone meet everyone”
-
 LEFT JOIN = “try to match, but don’t drop if there’s no match”
-
 COALESCE = “if the database says ‘nothing’, I actually want ‘0’”
-
 DISTINCT prevents double-counting if something weird happens (e.g. duplicate pantry rows)
-````
 
-# UUID Extension : Reason
-````bash
-UUIDs are good for web apps because they’re globally unique and hard to guess.
-Postgres doesn’t auto-generate UUIDs by itself — we need a function for that.
-"uuid-ossp" extension gives us the function uuid_generate_v4()
-This keeps inserts simple (you don’t have to create UUIDs in Python) and keeps IDs consistent across all tables.
-````
+junction / bridge / link table → a table that’s mostly FKs to join two tables
+constraint → a rule the DB enforces (PK, FK, UNIQUE, CHECK, NOT NULL)
 
-* Sanity check : Checked !
-````bash
-SELECT table_name
-FROM information_schema.tables
-WHERE table_schema = 'public'
-ORDER BY table_name;
 ````
 
 ## schema.sql

@@ -1,5 +1,6 @@
 -- db/schema.sql
-
+-- UUID – data type: 128-bit unique identifier (like d45548c5-48bd-..).
+-- if you insert a row without a uuid, postgres will call uuid_genereate_v4() function to make a random UUID
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 -- Users
@@ -7,7 +8,7 @@ CREATE TABLE IF NOT EXISTS cookbook_user (
     user_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     email TEXT NOT NULL UNIQUE,
     display_name TEXT NOT NULL,
-    created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now() -- Postgres function current timestamp
 );
 
 -- Ingredients
