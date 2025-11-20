@@ -1,7 +1,8 @@
 # SQL Interactive Cookbook
 👨‍🍳 Author : Chipp Larusson - 
 Aka Thumblock
-Database Design | SQL | Python | FastAPI | Streamlit | Postgres | Azure
+
+Database | SQL | Python | FastAPI | Streamlit | Postgres | Azure
 
 
 ##
@@ -120,5 +121,6 @@ RETURN-QUERY-SELECT = the result of this SELECT is the result of the function.
 LANGUAGE plpgsql = tells Postgres we’re using its procedural language(lets you use variables, IF, loops, etc.)
 BEGIN-END; = the block of code to run
 ````
+
 
 
