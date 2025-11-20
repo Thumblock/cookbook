@@ -81,6 +81,7 @@ RealDictCursor     = Makes query results come back as dicts ({"recipe_id". "..."
 
 * Every table has a voice and a purpose — and together they “talk” through foreign keys and joins.
 
+<img width="2494" height="901" alt="Cookbook_ER_Diagram" src="https://github.com/user-attachments/assets/f63d76e0-89bc-4b92-9d25-499356324e11" />
 
 
 * How to think when coding SQL :
@@ -119,3 +120,4 @@ RETURN-QUERY-SELECT = the result of this SELECT is the result of the function.
 LANGUAGE plpgsql = tells Postgres we’re using its procedural language(lets you use variables, IF, loops, etc.)
 BEGIN-END; = the block of code to run
 ````
+
