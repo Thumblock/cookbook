@@ -26,6 +26,10 @@ source .venv/bin/activate
 uv pip install -r requirements.txt
 Use .env.example and update real .env accordingly
 
+🛢️ Azure (Postgres)
+Copy all code from the .sql files and run them in a query with Azure using Postgres connection.
+Start with Schema.sql then logic.sql (seed.sql is demo user examples)
+
 ⚙️ Start FastAPI backend
 uv run uvicorn src.cookbook.backend.api:app --reload
 Visit: http://127.0.0.1:8000/health
@@ -121,6 +125,7 @@ RETURN-QUERY-SELECT = the result of this SELECT is the result of the function.
 LANGUAGE plpgsql = tells Postgres we’re using its procedural language(lets you use variables, IF, loops, etc.)
 BEGIN-END; = the block of code to run
 ````
+
 
 
 
