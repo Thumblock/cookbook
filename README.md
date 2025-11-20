@@ -30,6 +30,12 @@ Use .env.example and update real .env accordingly
 Copy all code from the .sql files and run them in a query with Azure using Postgres connection.
 Start with Schema.sql then logic.sql (seed.sql is demo user examples)
 
+📚 Query : Table Sanity Check :
+SELECT table_name
+FROM information_schema.tables
+WHERE table_schema = 'public'
+ORDER BY table_name;
+
 ⚙️ Start FastAPI backend
 uv run uvicorn src.cookbook.backend.api:app --reload
 Visit: http://127.0.0.1:8000/health
@@ -39,13 +45,6 @@ Open another Terminal while you still have FastAPI running in first terminal *Ba
 uv run streamlit run src/cookbook/frontend/dashboard.py
 ````
 
-* Query Sanity Check :
-````bash
-SELECT table_name
-FROM information_schema.tables
-WHERE table_schema = 'public'
-ORDER BY table_name;
-````
 
 
 
@@ -125,6 +124,7 @@ RETURN-QUERY-SELECT = the result of this SELECT is the result of the function.
 LANGUAGE plpgsql = tells Postgres we’re using its procedural language(lets you use variables, IF, loops, etc.)
 BEGIN-END; = the block of code to run
 ````
+
 
 
 
